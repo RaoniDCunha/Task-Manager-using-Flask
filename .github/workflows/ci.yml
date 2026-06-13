@@ -31,7 +31,9 @@ jobs:
 
       - name: Run unit tests with coverage
         run: pytest --cov-report=xml
-
+      
+      ## Analise Estatica com o Bandit no código da aplicação
+      
       - name: Análise de Segurança Estática com Bandit
         run: bandit -r . -ll -ii
        
@@ -39,3 +41,17 @@ jobs:
         continue-on-error: true
         run: safety check -r requirements.txt
         
+      ## Analise Dinamica com o Owasp Zap na aplicação
+
+      - name: Build da Imagem Docker
+        run: docker build -t task-manager-app .
+
+      - name: Subir a Aplicação em Background
+        run: docker run -d -p 5000:5000 --name app-container task-manager-app
+
+      - name: Aguardar o Flask iniciar
+        run: sleep 5
+
+      - name: Análise Dinâmica de Segurança (DAST com OWASP ZAP)
+        continue-on-error: true
+        run: docker run --network host -t owasp/zap2docker-stable zap-baseline.py -t http://localhost:5000
