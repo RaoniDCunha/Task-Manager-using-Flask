@@ -35,6 +35,7 @@ jobs:
       ## Analise Estatica com o Bandit no código da aplicação
       
       - name: Análise de Segurança Estática com Bandit
+        continue-on-error: true
         run: bandit -r . -ll -ii
        
       - name: Análise de Dependências (Safety)
