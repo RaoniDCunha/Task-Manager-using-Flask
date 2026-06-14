@@ -10,7 +10,7 @@ from flask_bcrypt import Bcrypt
 
 app = Flask(__name__)
 
-
+## prometheusd
 metrics = PrometheusMetrics(app)
 metrics.info('app_info', 'Métricas da aplicação Task Manager', version='1.0.0')
 
