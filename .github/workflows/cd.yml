@@ -29,3 +29,21 @@ jobs:
       - name: Testes de Segurança (DAST) no Stage com OWASP ZAP
         continue-on-error: true
         run: docker run --network host -t zaproxy/zap-stable zap-baseline.py -t http://localhost:8080
+
+  deploy_aws:
+    name: CD - Deploy na AWS
+    needs: deploy_stage 
+    runs-on: ubuntu-latest
+    steps:
+      - name: Testar Conexão SSH e Verificar Ambiente
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            echo "Conexão SSH estabelecida com sucesso na AWS!"
+            echo "Informações do Sistema:"
+            uname -a
+            echo "Verificando se o Docker está instalado:"
+            docker --version || echo "Atenção: Docker ainda não está instalado nesta máquina."
