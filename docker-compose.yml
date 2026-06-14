@@ -25,11 +25,10 @@ services:
     depends_on:
       - prometheus
     restart: always
-    
+
   cadvisor:
-    image: gcr.io/cadvisor/cadvisor:v0.49.0
+    image: gcr.io/cadvisor/cadvisor:v0.47.0
     container_name: cadvisor
-    # O cAdvisor precisa desses volumes para "enxergar" o motor do Docker do seu Linux
     volumes:
       - /:/rootfs:ro
       - /var/run:/var/run:ro
