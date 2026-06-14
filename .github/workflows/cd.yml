@@ -58,4 +58,4 @@ jobs:
             cd /home/${{ secrets.EC2_USER }}/task-manager
             
             echo "Subindo a infraestrutura completa (App, Prometheus e Grafana)..."
-            docker compose up -d --build
+            docker compose up -d 
