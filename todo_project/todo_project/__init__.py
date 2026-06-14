@@ -1,16 +1,19 @@
 import os
 
+from prometheus_flask_exporter import PrometheusMetrics
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_bcrypt import Bcrypt
-from prometheus_flask_exporter import PrometheusMetrics
+
 
 
 app = Flask(__name__)
 
+
 metrics = PrometheusMetrics(app)
 metrics.info('app_info', 'Métricas da aplicação Task Manager', version='1.0.0')
+
 
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', '45cf93c4d41348cd9980674ade9a7356')
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URI', 'sqlite:///site.db')
