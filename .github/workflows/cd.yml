@@ -57,5 +57,11 @@ jobs:
             echo "Navegando até a pasta do projeto..."
             cd /home/${{ secrets.EC2_USER }}/task-manager
             
-            echo "Subindo a infraestrutura completa (App, Prometheus e Grafana)..."
-            docker compose up -d 
+            echo "1. Construindo a nova imagem de forma tradicional..."
+            docker build -t task-manager-prod .
+            
+            echo "2. Limpando o container antigo..."
+            docker rm -f app-prod || true
+            
+            echo "3. Subindo a infraestrutura completa (App, Prometheus e Grafana)..."
+            docker compose up -d
