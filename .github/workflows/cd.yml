@@ -57,16 +57,5 @@ jobs:
             echo "Navegando até a pasta do projeto..."
             cd /home/${{ secrets.EC2_USER }}/task-manager
             
-            echo "Construindo a nova imagem Docker localmente na EC2..."
-            docker build -t task-manager-prod .
-            
-            echo "Parando e removendo o container antigo (se existir)..."
-            # O comando || true evita que o pipeline quebre na primeira vez, quando o container ainda não existe
-            docker stop app-prod || true
-            docker rm app-prod || true
-            
-            echo "Subindo o novo container em produção na porta 80!"
-            # Mapeamos para a porta 80 para você acessar direto pelo IP no navegador
-            docker run -d -p 80:5000 --name app-prod task-manager-prod
-            
-            echo "Deploy concluído com sucesso!"
+            echo "Subindo a infraestrutura completa (App, Prometheus e Grafana)..."
+            docker compose up -d --build
